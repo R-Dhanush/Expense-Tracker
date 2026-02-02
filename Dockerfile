@@ -1,12 +1,14 @@
-FROM tomcat:10.1-jdk17
+# Use official Tomcat image with JDK
+FROM tomcat:10.1.14-jdk17
 
-# Remove default ROOT app
-RUN rm -rf /usr/local/tomcat/webapps/ROOT \
-           /usr/local/tomcat/webapps/ROOT.war
+# Remove default webapps
+RUN rm -rf /usr/local/tomcat/webapps/*
 
-# Copy your app as ROOT
+# Copy your WAR file into Tomcat
 COPY ROOT.war /usr/local/tomcat/webapps/ROOT.war
 
-# (Optional) if you use setenv.sh
-COPY setenv.sh /usr/local/tomcat/bin/setenv.sh
-RUN chmod +x /usr/local/tomcat/bin/setenv.sh
+# Expose port 8080
+EXPOSE 8080
+
+# Start Tomcat
+CMD ["catalina.sh", "run"]
